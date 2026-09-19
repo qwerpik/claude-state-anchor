@@ -1,0 +1,15 @@
+{
+  "name": "claude-state-anchor",
+  "owner": {
+    "name": "qwerpik",
+    "url": "https://github.com/qwerpik"
+  },
+  "plugins": [
+    {
+      "name": "state-anchor",
+      "source": "./",
+      "description": "Session-state protection for Claude Code: survive context compaction without losing decisions, constraints or rules.",
+      "version": "0.1.0"
+    }
+  ]
+}

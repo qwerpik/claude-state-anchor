@@ -1,0 +1,23 @@
+{
+  "name": "state-anchor",
+  "displayName": "Claude State Anchor",
+  "version": "0.1.0",
+  "description": "Session-state protection for Claude Code: snapshots working state before context compaction, rehydrates it after, and injects per-file rules before every edit.",
+  "author": {
+    "name": "qwerpik",
+    "url": "https://github.com/qwerpik"
+  },
+  "homepage": "https://github.com/qwerpik/claude-state-anchor",
+  "repository": "https://github.com/qwerpik/claude-state-anchor",
+  "license": "MIT",
+  "keywords": [
+    "hooks",
+    "compaction",
+    "memory",
+    "session-state",
+    "context-engineering",
+    "rules"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "skills": ["./skills/state-anchor"]
+}
