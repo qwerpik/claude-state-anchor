@@ -25,17 +25,15 @@
 > ```
 > Then let the model maintain `.claude/anchor.md` — one line per decision, kept current the moment it's made.
 
-## Contents
-
-- [Install](#install)
-- [What it does](#what-it-does)
-- [Quick start](#quick-start)
-- [How it works](#how-it-works)
-- [Status](#status)
-- [Verify](#verify)
-- [FAQ](#faq)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
+<p align="center">
+  <a href="#install">Install</a> •
+  <a href="#what-it-does">What it does</a> •
+  <a href="#quick-start">Quick start</a> •
+  <a href="#how-it-works">How it works</a> •
+  <a href="#status">Status</a> •
+  <a href="#verify">Verify</a> •
+  <a href="#faq">FAQ</a>
+</p>
 
 > [!CAUTION]
 > **😱 Without it**
