@@ -1,7 +1,7 @@
 {
   "name": "state-anchor",
   "displayName": "Claude State Anchor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Session-state protection for Claude Code: snapshots working state before context compaction, rehydrates it after, and injects per-file rules before every edit.",
   "author": {
     "name": "qwerpik",
@@ -19,5 +19,6 @@
     "rules"
   ],
   "hooks": "./hooks/hooks.json",
-  "skills": ["./skills/state-anchor"]
+  "skills": ["./skills/state-anchor"],
+  "commands": ["./commands/"]
 }

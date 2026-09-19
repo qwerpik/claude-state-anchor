@@ -7,6 +7,7 @@ import {
   LIMITS,
   buildSnapshot,
   readStdinJson,
+  removeSummaryFile,
   safeSessionId,
   stateDir,
   writeSnapshot,
@@ -17,9 +18,13 @@ if (!input || input.session_id == null) process.exit(0);
 
 try {
   const cwd = typeof input.cwd === "string" && input.cwd ? input.cwd : process.cwd();
+  const sessionId = safeSessionId(input.session_id);
   const snapshot = buildSnapshot(input, input.transcript_path, cwd, LIMITS);
-  snapshot.session_id = safeSessionId(input.session_id);
-  writeSnapshot(cwd, snapshot);
+  snapshot.session_id = sessionId;
+  if (writeSnapshot(cwd, snapshot)) {
+    // the previous summary now lives inside the snapshot — drop the file
+    removeSummaryFile(cwd, sessionId);
+  }
   if (process.env.STATE_ANCHOR_DEBUG) {
     console.error(`[state-anchor] snapshot written to ${stateDir(cwd)}`);
   }

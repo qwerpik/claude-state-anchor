@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 — 2026-09-19
+
+- **PostCompact hook**: persists Claude Code's own `compact_summary` per
+  session to `.claude/state-anchor/summary-<session>.json`.
+- **Chained-compaction protection**: `PreCompact` folds the previous
+  compaction summary into the new snapshot (and clears the summary file);
+  `SessionStart` re-injects it as a "previous compaction summary" section.
+  After repeated compactions the model keeps the older, less-eroded text
+  instead of only a summary-of-a-summary.
+- **`/anchor` command**: review and refresh the anchor state mid-session.
+- CI workflow (Node 20/22 matrix), README verified-status table,
+  architecture docs for the summary chain.
+
 ## 0.1.0 — 2026-09-19
 
 Initial release.

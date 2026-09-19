@@ -14,6 +14,8 @@ export const LIMITS = {
   recentMessages: 3, // last assistant texts stored in the snapshot
   recentChars: 300,
   ruleChars: 2000, // total budget for one PreToolUse injection
+  summaryChars: 6000, // PostCompact compact_summary persisted per session
+  priorSummaryChars: 2500, // previous compaction summary carried in a snapshot
   transcriptLines: 5000, // transcript lines parsed at most (from the end)
   transcriptBytes: 32 * 1024 * 1024, // read only the tail above this
   snapshotMaxAgeMs: 24 * 60 * 60 * 1000, // orphan snapshots older than this are ignored
@@ -92,6 +94,9 @@ export function snapshotFile(cwd, sessionId) {
 export function ledgerFile(cwd, sessionId) {
   return path.join(stateDir(cwd), `ledger-${sessionId}.json`);
 }
+export function summaryFile(cwd, sessionId) {
+  return path.join(stateDir(cwd), `summary-${sessionId}.json`);
+}
 
 // ---------- transcript ----------
 
@@ -163,12 +168,23 @@ export function parseTranscript(transcriptPath, limits = LIMITS) {
 
 export function buildSnapshot(input, transcriptPath, cwd, limits = LIMITS) {
   const t = parseTranscript(transcriptPath, limits);
+  // Fold the previous compaction's summary (persisted by the PostCompact
+  // hook) into this snapshot: after the next compaction the model holds a
+  // summary-of-a-summary, and re-injecting the older, less-eroded text is
+  // the whole point of chained-compaction protection.
+  let priorSummary = "";
+  const sid = safeSessionId(input.session_id);
+  const prevSummaryData = readJsonFile(summaryFile(cwd, sid));
+  if (prevSummaryData && typeof prevSummaryData.summary === "string" && prevSummaryData.summary.trim()) {
+    priorSummary = clip(prevSummaryData.summary, limits.priorSummaryChars);
+  }
   return {
     schema: 1,
-    session_id: safeSessionId(input.session_id),
+    session_id: sid,
     saved_at: new Date().toISOString(),
     trigger: typeof input.trigger === "string" ? input.trigger : null,
     anchor: clip(readTextFile(anchorPath(cwd)), limits.anchorChars),
+    prior_summary: priorSummary,
     files_touched: t.files
       .slice(-limits.fileEntries)
       .map((f) => clip(f, limits.filePathChars)),
@@ -176,6 +192,38 @@ export function buildSnapshot(input, transcriptPath, cwd, limits = LIMITS) {
     recent_activity: t.texts.slice(-limits.recentMessages).map((s) => clip(s, limits.recentChars)),
     transcript_parsed: t.parsed,
   };
+}
+
+// Called after the new snapshot is safely on disk: the previous compaction
+// summary now lives inside the snapshot, so the standalone file can go.
+export function removeSummaryFile(cwd, sessionId) {
+  try {
+    fs.unlinkSync(summaryFile(cwd, sessionId));
+  } catch {
+    // nothing to remove — fine
+  }
+}
+
+export function writeSummaryFile(cwd, sessionId, summary, trigger, limits = LIMITS) {
+  if (!ensureDir(stateDir(cwd))) return false;
+  try {
+    fs.writeFileSync(
+      summaryFile(cwd, sessionId),
+      JSON.stringify(
+        {
+          schema: 1,
+          saved_at: new Date().toISOString(),
+          trigger: typeof trigger === "string" ? trigger : null,
+          summary: clip(summary, limits.summaryChars),
+        },
+        null,
+        2,
+      ),
+    );
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function writeSnapshot(cwd, snapshot) {
@@ -244,7 +292,7 @@ export function pruneStateDir(cwd, limits = LIMITS) {
   }
   const cutoff = Date.now() - limits.pruneAgeMs;
   for (const e of entries) {
-    if (!e.startsWith("snapshot-") && !e.startsWith("ledger-")) continue;
+    if (!e.startsWith("snapshot-") && !e.startsWith("ledger-") && !e.startsWith("summary-")) continue;
     const p = path.join(dir, e);
     try {
       if (fs.statSync(p).mtimeMs < cutoff) fs.unlinkSync(p);
@@ -260,6 +308,9 @@ export function composeRestoreContext(snap) {
   if (!snap || typeof snap !== "object") return "";
   const parts = [];
   if (snap.anchor) parts.push(`### Project anchor notes (pre-compaction)\n${snap.anchor}`);
+  if (snap.prior_summary) {
+    parts.push(`### Previous compaction summary (carried across chained compactions)\n${snap.prior_summary}`);
+  }
   if (Array.isArray(snap.files_touched) && snap.files_touched.length) {
     parts.push(`### Files touched this session\n${snap.files_touched.map((f) => `- ${f}`).join("\n")}`);
   }
