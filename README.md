@@ -19,7 +19,7 @@
 
 > [!TIP]
 > **Try in 60 seconds**
-> ```
+> ```bash
 > /plugin marketplace add qwerpik/claude-state-anchor
 > /plugin install state-anchor@claude-state-anchor
 > ```
@@ -30,6 +30,7 @@
   <a href="#what-it-does">What it does</a> •
   <a href="#quick-start">Quick start</a> •
   <a href="#how-it-works">How it works</a> •
+  <a href="docs/ARCHITECTURE.md">Architecture</a> •
   <a href="#status">Status</a> •
   <a href="#verify">Verify</a> •
   <a href="#faq">FAQ</a>
@@ -49,7 +50,7 @@
 
 Requires [Claude Code](https://claude.com/claude-code) and Node.js ≥ 18 on `PATH`.
 
-```
+```bash
 /plugin marketplace add qwerpik/claude-state-anchor
 /plugin install state-anchor@claude-state-anchor
 ```
@@ -148,7 +149,7 @@ Full hook contracts and file layout: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md
 
 <a id="verify"></a>
 
-```
+```bash
 npm test                        # unit + contract tests (Node built-in runner)
 node scripts/e2e-resume.mjs     # optional: proves rehydration end-to-end
 ```
