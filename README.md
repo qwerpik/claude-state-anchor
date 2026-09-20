@@ -1,40 +1,44 @@
+<div align="center">
+
 # ⚓ Claude State Anchor
 
-<p align="center">
-  <a href="https://github.com/qwerpik/claude-state-anchor/actions/workflows/ci.yml"><img src="https://github.com/qwerpik/claude-state-anchor/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/qwerpik/claude-state-anchor/stargazers"><img src="https://img.shields.io/github/stars/qwerpik/claude-state-anchor?style=flat-square&logo=github&color=fab387" alt="GitHub Stars" /></a>
-  <a href="https://github.com/qwerpik/claude-state-anchor/releases"><img src="https://img.shields.io/github/v/release/qwerpik/claude-state-anchor?style=flat-square&logo=github&color=89b4fa" alt="Release" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-f38ba8?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License: MIT" /></a>
-  <img src="https://img.shields.io/badge/Node-18+-89dceb?style=flat-square&logo=node.js&logoColor=white" alt="Node 18+" />
-  <img src="https://img.shields.io/badge/Deps-0-a6e3a1?style=flat-square" alt="Zero dependencies" />
-</p>
+**Stop losing your session's brain every time Claude Code compacts the context.**
 
-<p align="center">
-  <em>Stop losing your session's brain every time Claude Code compacts the context.</em>
-</p>
+<br />
 
-<p align="center">
-  Zero-dependency plugin &nbsp;•&nbsp; 4 hooks &nbsp;•&nbsp; fully offline &nbsp;•&nbsp; never blocks your session
-</p>
+[![Star this repo](https://img.shields.io/github/stars/qwerpik/claudestateanchor?style=for-the-badge&logo=github&label=%E2%AD%90%20Star%20this%20repo&color=yellow)](https://github.com/qwerpik/claudestateanchor/stargazers)
+
+<br />
+
+[![CI Status](https://img.shields.io/github/actions/workflow/status/qwerpik/claudestateanchor/ci.yml?branch=main&label=CI&style=for-the-badge&logo=githubactions&logoColor=white&color=a6e3a1)](https://github.com/qwerpik/claudestateanchor/actions/workflows/ci.yml)
+&nbsp;
+[![Release](https://img.shields.io/github/v/release/qwerpik/claudestateanchor?style=for-the-badge&logo=github&color=89b4fa)](https://github.com/qwerpik/claudestateanchor/releases)
+&nbsp;
+[![Node 18+](https://img.shields.io/badge/Node-18+-89dceb?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+&nbsp;
+[![Dependencies: 0](https://img.shields.io/badge/Dependencies-0-a6e3a1?style=for-the-badge)](package.json)
+&nbsp;
+[![License: MIT](https://img.shields.io/badge/License-MIT-f38ba8?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+&nbsp;
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
+
+---
+
+Zero-dependency Claude Code plugin • 4 lightweight lifecycle hooks • Fully offline • Never blocks your session.
+
+[Install](#install) • [What It Does](#what-it-does) • [Quickstart](#quick-start) • [How It Works](#how-it-works) • [Architecture](docs/ARCHITECTURE.md) • [Status](#status) • [Contributing](#contributing)
+
+</div>
+
+<br />
 
 > [!TIP]
 > **Try in 60 seconds**
 > ```bash
-> /plugin marketplace add qwerpik/claude-state-anchor
-> /plugin install state-anchor@claude-state-anchor
+> /plugin marketplace add qwerpik/claudestateanchor
+> /plugin install state-anchor@claudestateanchor
 > ```
 > Then let the model maintain `.claude/anchor.md` — one line per decision, kept current the moment it's made.
-
-<p align="center">
-  <a href="#install">Install</a> •
-  <a href="#what-it-does">What it does</a> •
-  <a href="#quick-start">Quick start</a> •
-  <a href="#how-it-works">How it works</a> •
-  <a href="docs/ARCHITECTURE.md">Architecture</a> •
-  <a href="#status">Status</a> •
-  <a href="#verify">Verify</a> •
-  <a href="#faq">FAQ</a>
-</p>
 
 > [!CAUTION]
 > **😱 Without it**
@@ -51,8 +55,8 @@
 Requires [Claude Code](https://claude.com/claude-code) and Node.js ≥ 18 on `PATH`.
 
 ```bash
-/plugin marketplace add qwerpik/claude-state-anchor
-/plugin install state-anchor@claude-state-anchor
+/plugin marketplace add qwerpik/claudestateanchor
+/plugin install state-anchor@claudestateanchor
 ```
 
 ## What it does
@@ -143,7 +147,7 @@ Full hook contracts and file layout: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md
 | 29 unit & contract tests (`npm test`) | ✅ green |
 | Hook execution in a real `claude` CLI session (`SessionStart` on `--resume`, snapshot consumed & archived) | ✅ verified live 2026-09-19 |
 | Resume-path rehydration reaching the model (codephrase experiment) | ⚠️ script shipped, run it on your machine — see `scripts/e2e-resume.mjs` |
-| Compact path end-to-end (real auto-compact → model uses the `<state-anchor>` block) | ⚠️ pending — tracked in [#1](https://github.com/qwerpik/claude-state-anchor/issues/1); the author's environment (local API proxy with a 32k-token limit) cannot run real sessions |
+| Compact path end-to-end (real auto-compact → model uses the `<state-anchor>` block) | ⚠️ pending — tracked in [#1](https://github.com/qwerpik/claudestateanchor/issues/1); the author's environment (local API proxy with a 32k-token limit) cannot run real sessions |
 
 ## Verify
 
@@ -174,18 +178,37 @@ node scripts/e2e-resume.mjs     # optional: proves rehydration end-to-end
 - rulesync-compatible rule export
 - optional [contextslice](https://github.com/qwerpik/contextslice) integration as a rule/context provider
 
-## Contributing
-
 <a id="contributing"></a>
+## 🤝 Contributing
 
-1. Fork → branch → PR.
+Contributions, bug reports, and optimizations are warmly welcome!
+
+1. Fork the repo and create your branch (`git checkout -b feature/my-feature`).
 2. Run `npm test` before submitting.
-3. Keep hooks offline, dependency-free, and never-blocking — that's the whole point.
+3. Keep hooks offline, dependency-free, and non-blocking.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for full guidelines.
+
+---
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=qwerpik/claude-state-anchor&type=Date)](https://star-history.com/#qwerpik/claude-state-anchor&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=qwerpik/claudestateanchor&type=Date)](https://star-history.com/#qwerpik/claudestateanchor&Date)
 
-## License
+---
 
-[MIT](LICENSE)
+<div align="center">
+
+Built by [qwerpik](https://github.com/qwerpik)
+
+<br />
+
+**If this plugin protects your Claude sessions, give it a star!**
+
+[![Star this repo](https://img.shields.io/github/stars/qwerpik/claudestateanchor?style=for-the-badge&logo=github&label=%E2%AD%90%20Star%20this%20repo&color=yellow)](https://github.com/qwerpik/claudestateanchor/stargazers)
+
+<br />
+
+Distributed under the [MIT License](LICENSE) © 2026 [qwerpik](https://github.com/qwerpik).
+
+</div>

@@ -7,8 +7,8 @@
     "name": "qwerpik",
     "url": "https://github.com/qwerpik"
   },
-  "homepage": "https://github.com/qwerpik/claude-state-anchor",
-  "repository": "https://github.com/qwerpik/claude-state-anchor",
+  "homepage": "https://github.com/qwerpik/claudestateanchor",
+  "repository": "https://github.com/qwerpik/claudestateanchor",
   "license": "MIT",
   "keywords": [
     "hooks",
